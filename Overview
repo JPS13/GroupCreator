@@ -1,1 +1,20 @@
 Top Level Overview of Program
+
+
+
+Notes
+
+   A group cannot exist without a classroom - Aggregation 
+   A student can exist without a classroom - Composition
+   Change lists to maps?
+  
+   Student
+     - Map<String, Boolean> accommodations
+        - frontSeatNeeded
+        - groupOfFivePreferred     
+     
+   Classroom 
+     - Layout - total number of groups, # of front groups
+     - addStudent - enrollStudent? checks if there is room for another front seat student
+     - addIncompatibleStudents - keep or remove? classroom must contain both students and sizes must allow
+     - removeIncompatibleStudents keep or remove?

@@ -17,16 +17,6 @@ public class Group extends Model {
 		setDate();		
 		this.studentList = studentList;		
 	}
-
-	/**
-	 * This method adds a student to this group.
-	 * 
-	 * @param student The student to be added.
-	 */
-	
-	public void addStudent(Student student) {		
-		studentList.add(student);		
-	}
 	
 	/**
 	 * This method compares data fields to test equality.
