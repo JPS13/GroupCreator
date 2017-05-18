@@ -33,7 +33,7 @@ public class GroupCreator {
 		return groups; 				
 	}
 	
-	private static List<Student> copyStudents(Set<Student> students) {		
+	private static List<Student> copyStudents(Collection<Student> students) {		
 		List<Student> newStudentList = new ArrayList<>();
 		
 		for(Student student: students) {
