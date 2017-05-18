@@ -31,10 +31,10 @@ public class Classroom extends Model {
 	
 	public boolean addIncompatibleStudents(Student student1, Student student2) {
 		
-		if(student1.getStudentList().size() < 4 && 
-				student2.getStudentList().size() < 4) {
-			student1.getStudentList().add(student2);
-			student2.getStudentList().add(student1);
+		if(student1.getStudents().size() < 4 && 
+				student2.getStudents().size() < 4) {
+			student1.getStudents().add(student2);
+			student2.getStudents().add(student1);
 			return true;
 		} else 
 			return false;			
@@ -54,7 +54,7 @@ public class Classroom extends Model {
 		int frontStudents = 0;
 		
 		// Count how many students need to sit up front
-		for(Student s: studentList) {
+		for(Student s: students) {
 			if(s.getFrontSeatNeeded())
 				frontStudents++;
 		}
@@ -64,7 +64,7 @@ public class Classroom extends Model {
 			frontStudents++;
 		
 		if(frontStudents <= maxFrontStudents) {
-			studentList.add(student);
+			students.add(student);
 			return true;
 		}
 		
@@ -90,7 +90,7 @@ public class Classroom extends Model {
 				this.grade == classroom.getGrade() &&
 				this.subject == classroom.getSubject() &&
 				this.maximumFrontGroups == classroom.getMaximumFrontGroups() &&
-				this.studentList.equals(classroom.getStudentList()) &&
+				this.students.equals(classroom.getStudents()) &&
 				this.groupList.equals(classroom.getGroupList()));
 	}
 	
@@ -165,8 +165,8 @@ public class Classroom extends Model {
 	 */
 	
 	public void removeIncompatibleStudents(Student student1, Student student2) {
-		student1.getStudentList().remove(student2);
-		student2.getStudentList().remove(student1);
+		student1.getStudents().remove(student2);
+		student2.getStudents().remove(student1);
 	}
 	
 	/**

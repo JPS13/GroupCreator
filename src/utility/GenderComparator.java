@@ -28,7 +28,6 @@ import model.Student;
  * @version 1.2
  *
  */
-
 public class GenderComparator implements Comparator<Student> {
 
 	/**
@@ -36,8 +35,7 @@ public class GenderComparator implements Comparator<Student> {
 	 * their genders.
 	 * 
 	 * @return The integer result of the comparison is returned. 
-	 */
-	
+	 */	
 	@Override
 	public int compare(Student s1, Student s2) {
 		
@@ -57,9 +55,7 @@ public class GenderComparator implements Comparator<Student> {
 		
 		if(s1Gender == null || s2Gender == null) {
 			return s1Value - s2Value;
-		}
- 			
-		else {
+		} else {
 			return s1Gender.compareTo(s2Gender);
 		}		
 	}

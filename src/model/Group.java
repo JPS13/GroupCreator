@@ -13,9 +13,9 @@ public class Group extends Model {
 		setDate();	 
 	}
 	
-	public Group(List<Student> studentList) {			
+	public Group(Set<Student> students) {			
 		setDate();		
-		this.studentList = studentList;		
+		this.students = students;		
 	}
 	
 	/**
@@ -29,7 +29,7 @@ public class Group extends Model {
 		return (this.dateCreated == group.getDateCreated() &&
 				this.groupNumber == group.getGroupNumber() &&
 				this.isFrontGroup == group.getIsFrontGroup() &&
-				this.studentList.equals(group.getStudentList()));
+				this.students.equals(group.getStudents()));
 	}
 		
 	/**

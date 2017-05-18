@@ -29,7 +29,6 @@ import model.*;
  * @author Joseph Stewart
  * @version 1.2
  */
-
 public class AbilityComparator implements Comparator<Student> {
 
 	/**
@@ -37,8 +36,7 @@ public class AbilityComparator implements Comparator<Student> {
 	 * their ability levels.
 	 * 
 	 * @return The integer result of the comparison is returned.
-	 */
-	
+	 */	
 	@Override
 	public int compare(Student s1, Student s2) {
 		
@@ -51,36 +49,25 @@ public class AbilityComparator implements Comparator<Student> {
 		// Assign value to s1
 		if(s1Ability == null) {
 			s1Value = 0;
-		}
-		
-		else {			
-			if(s1Ability.equals(AbilityLevel.HIGH)) {
-				s1Value = 3;
-			}
-			else if(s1Ability.equals(AbilityLevel.AVERAGE)) {
-				s1Value = 2;
-			}
-			else {
-				s1Value = 1;
-			}	
-		}
-		
+		} else if(s1Ability.equals(AbilityLevel.HIGH)) {
+			s1Value = 3;
+		} else if(s1Ability.equals(AbilityLevel.AVERAGE)) {
+			s1Value = 2;
+		} else {
+			s1Value = 1;
+		}	
+				
 		// Assign value to s2
 		if(s2Ability == null) {
 			s2Value = 0;
+		} else if(s2Ability.equals(AbilityLevel.HIGH)) {
+			s2Value = 3;
+		} else if(s2Ability.equals(AbilityLevel.AVERAGE)) {
+			s2Value = 2;
+		} else {
+			s2Value = 1;
 		}
 		
-		else {			
-			if(s2Ability.equals(AbilityLevel.HIGH)) {
-				s2Value = 3;
-			}
-			else if(s2Ability.equals(AbilityLevel.AVERAGE)) {
-				s2Value = 2;
-			}
-			else {
-				s2Value = 1;
-			}
-		} 			
 		return s1Value - s2Value;		
 	}
 }

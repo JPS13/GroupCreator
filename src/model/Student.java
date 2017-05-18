@@ -1,11 +1,13 @@
 package model;
 
-public class Student extends Model {
+public class Student extends Model implements Comparable<Student> {
 	
 	private String firstName;
 	private String lastName;
 	private Gender gender;	
 	private AbilityLevel abilityLevel;	
+	
+	// Accommodations 
 	private boolean frontSeatNeeded;
 	private boolean preferredGroupOfFive;
 						
@@ -18,17 +20,6 @@ public class Student extends Model {
 		this.abilityLevel = abilityLevel;	
 	}
 		
-	public boolean equals(Object object) {
-		Student otherStudent = (Student) object;
-		
-		return firstName.equals(otherStudent.getFirstName())
-				&& lastName.equals(otherStudent.getLastName())
-				&& gender == otherStudent.getGender()
-				&& abilityLevel == otherStudent.getAbilityLevel()
-				&& frontSeatNeeded == otherStudent.getFrontSeatNeeded()
-				&& preferredGroupOfFive == otherStudent.getPreferredGroupOfFive();
-	}
-	
 	public AbilityLevel getAbilityLevel() {
 		return abilityLevel;
 	}
@@ -53,8 +44,8 @@ public class Student extends Model {
 		return preferredGroupOfFive;
 	}
 	
-	public void setAbilityLevel(AbilityLevel ability) {
-		abilityLevel = ability;
+	public void setAbilityLevel(AbilityLevel abilityLevel) {
+		this.abilityLevel = abilityLevel;
 	}
 	
 	public void setFirstName(String firstName) {
@@ -73,26 +64,48 @@ public class Student extends Model {
 			this.lastName = lastName.trim();
 	}
 	
-	public void setPreferredGroupOfFive(boolean Five) {
-		preferredGroupOfFive = Five;
+	public void setPreferredGroupOfFive(boolean preferredGroupOfFive) {
+		this.preferredGroupOfFive = preferredGroupOfFive;
+	}
+	
+	
+	@Override
+	public int compareTo(Student otherStudent) {
+		if(this.lastName.compareTo(otherStudent.lastName) == 0) {
+			return this.firstName.compareTo(otherStudent.firstName);
+		} else {
+			return this.lastName.compareTo(otherStudent.lastName);
+		}
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		Student otherStudent = (Student) object;
+		
+		return firstName.equals(otherStudent.getFirstName())
+				&& lastName.equals(otherStudent.getLastName())
+				&& gender == otherStudent.getGender()
+				&& abilityLevel == otherStudent.getAbilityLevel()
+				&& frontSeatNeeded == otherStudent.getFrontSeatNeeded()
+				&& preferredGroupOfFive == otherStudent.getPreferredGroupOfFive();
 	}
 	
 	@Override
 	public String toString() {
 		
-		String string = "Name: " + firstName + " " + lastName + 
-						", Gender: " + gender + 
-						", Ability Level: " + abilityLevel; 
+		StringBuilder stringValue = new StringBuilder("Name: ").append(firstName)
+				.append(" ").append(lastName)
+				.append(", Gender: ").append(gender)				
+				.append(", Ability Level: ").append(abilityLevel);
 		
 		if(frontSeatNeeded) {
-			string += ", Front Seat";
+			stringValue.append(", Front Seat");
 		}
 		
 		if(preferredGroupOfFive) {
-			string += ", Group of Five";
+			stringValue.append(", Group of Five");
 		}
 		
-		return string;
+		return stringValue.toString();
 	}
-
 }
