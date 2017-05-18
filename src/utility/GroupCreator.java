@@ -13,7 +13,7 @@ public class GroupCreator {
 				
 		do {
 			// Create a random, working copy of studentList
-			List<Student> students = copyList(c.getStudentList());
+			List<Student> students = copyStudents(c.getStudents());
 			Collections.shuffle(students);
 			
 			frontCount = 0; 
@@ -33,10 +33,10 @@ public class GroupCreator {
 		return groups; 				
 	}
 	
-	private static List<Student> copyList(List<Student> studentList) {		
+	private static List<Student> copyStudents(Set<Student> students) {		
 		List<Student> newStudentList = new ArrayList<>();
 		
-		for(Student student: studentList) {
+		for(Student student: students) {
 			newStudentList.add(student);
 		}						
 		return newStudentList;		
@@ -100,7 +100,7 @@ public class GroupCreator {
 		
 		// Identify front groups
 		for(Group g : groups) {
-			for(Student s : g.getStudentList()) {				
+			for(Student s : g.getStudents()) {				
 				if(s.getFrontSeatNeeded()) {					
 					g.setIsFrontGroup(true);
 					break;
@@ -127,7 +127,7 @@ public class GroupCreator {
 				
 				group.add(s);
 				
-				for(Student student: s.getStudentList()) {
+				for(Student student: s.getStudents()) {
 					incompatibles.add(student);
 				}
 				
@@ -173,7 +173,7 @@ public class GroupCreator {
 					
 					group.add(s);
 					
-					for(Student student: s.getStudentList()) {
+					for(Student student: s.getStudents()) {
 						incompatibles.add(student);
 					}
 					
@@ -255,7 +255,7 @@ public class GroupCreator {
 			else if(student.getGender().equals(Gender.MALE))
 				males++;
 			
-			for(Student incompatibleStudent: student.getStudentList()) {
+			for(Student incompatibleStudent: student.getStudents()) {
 				incompatibles.add(incompatibleStudent);
 			}
 			
@@ -289,7 +289,7 @@ public class GroupCreator {
 						group.add(student);
 						
 						// Add new student's incompats to this group's incompats
-						for(Student s: student.getStudentList()) {
+						for(Student s: student.getStudents()) {
 							incompatibles.add(s);
 						}
 						
@@ -313,7 +313,7 @@ public class GroupCreator {
 						group.add(student);
 						
 						// Add new student's incompats to this group's incompats
-						for(Student s: student.getStudentList()) {
+						for(Student s: student.getStudents()) {
 							incompatibles.add(s);
 						}
 						
@@ -335,7 +335,7 @@ public class GroupCreator {
 					group.add(student);
 					
 					// Add new student's incompats to this group's incompats
-					for(Student s: student.getStudentList()) {
+					for(Student s: student.getStudents()) {
 						incompatibles.add(s);
 					}
 					

@@ -13,9 +13,9 @@ public class Group extends Model {
 		setDate();	 
 	}
 	
-	public Group(Set<Student> students) {			
+	public Group(Collection<Student> students) {			
 		setDate();		
-		this.students = students;		
+		this.students = (Set<Student>) students;		
 	}
 	
 	/**
