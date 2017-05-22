@@ -120,7 +120,7 @@ public class Student extends Model implements Comparable<Student> {
 	 * @param name The Student's name.
 	 */
 	public void setName(String name) {
-			this.name = name.trim();
+		this.name = name.trim();
 	}
 	
 	/**
