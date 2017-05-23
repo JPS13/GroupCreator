@@ -95,7 +95,8 @@ public final class Database {
 	
 	/**
 	 * Declares statements to create the database tables if they do
-	 * not already exist.
+	 * not already exist. This method is intended to be called once
+	 * when a Database object is first created.
 	 * 
 	 * @throws SQLException Thrown if there is a problem executing the
 	 * 						create statements.

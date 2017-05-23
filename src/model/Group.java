@@ -11,6 +11,9 @@ import java.util.*;
  */
 public class Group extends Model {
 	
+	/** The Classroom Id for the Classroom to which this Group is assigned. */
+	private int classroomId;
+	
 	/** The group number. */
 	private int groupNumber;
 	
@@ -33,6 +36,16 @@ public class Group extends Model {
 	public Group(Collection<Student> students) {			
 		setDate();		
 		this.students = (Set<Student>) students;		
+	}
+	
+	/**
+	 * Returns the classroom id for the Classroom to
+	 * which this Group is assigned.
+	 * 
+	 * @return The Classroom id.
+	 */
+	public int getClassroomId() {
+		return classroomId;
 	}
 		
 	/**
@@ -62,6 +75,16 @@ public class Group extends Model {
 	 */	
 	public boolean getIsFrontGroup() {
 		return isFrontGroup;
+	}
+	
+	/**
+	 * Sets the classroom id for the Classroom to
+	 * which this Group is assigned.
+	 * 
+	 * @param classroomId The classroom id.
+	 */
+	public void setClassroomId(int classroomId) {
+		this.classroomId = classroomId;
 	}
 	
 	/**

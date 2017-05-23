@@ -5,8 +5,10 @@ import model.*;
 
 /**
  * This BaseDAO interface defines the expected behavior
- * of the Classroom, Student, and Group data access 
- * objects. 
+ * of the implementing data access objects. It provides
+ * method declarations for adding, updating, deleting,
+ * and retrieving model objects as well as for assigning
+ * and unassigning students to the model objects. 
  * 
  * @author Joseph Stewart
  */
@@ -18,7 +20,7 @@ public interface BaseDAO {
 	 * @param model The object to be added.
 	 * @return Returns the added object.
 	 */
-	public abstract Model add(Model model);
+	public Model add(Model model);
 
 	/**
 	 * Updates an object in the database.
@@ -26,7 +28,7 @@ public interface BaseDAO {
 	 * @param model The object to be updated.
 	 * @return True if the update was successful; otherwise false.
 	 */
-	public abstract boolean update(Model model);
+	public boolean update(Model model);
 		
 	/**
 	 * Deletes an object from the database.
@@ -34,7 +36,7 @@ public interface BaseDAO {
 	 * @param model The object to be deleted.
 	 * @return True if the deletion is successful; otherwise false.
 	 */
-	public abstract boolean delete(Model model);
+	public boolean delete(Model model);
 		
 	/**
 	 * Returns a collection of model objects from
@@ -42,7 +44,7 @@ public interface BaseDAO {
 	 * 
 	 * @return The collection of objects.
 	 */
-	public abstract Collection<Model> getAll(); 	
+	public Collection<Model> getAll(); 	
  	
 	/**
 	 * Assigns a student to a model object.
@@ -50,7 +52,7 @@ public interface BaseDAO {
 	 * @param model The object to have the student assigned.
 	 * @param student The student to be assigned.
 	 */
- 	public abstract void assignStudent(Model model, Student student); 	
+ 	public void assignStudent(Model model, Student student); 	
  	
  	/**
  	 * Unassigns a student from the model object.
@@ -58,7 +60,7 @@ public interface BaseDAO {
  	 * @param moodel The object to have the student unassigned.
  	 * @param student The student to be unassigned.
  	 */
- 	public abstract void unassignStudent(Model model, Student student); 
+ 	public void unassignStudent(Model model, Student student); 
  	
  	/**
  	 * Returns a collection of students assigned to the object.
@@ -66,5 +68,5 @@ public interface BaseDAO {
  	 * @param model The object with students assigned.
  	 * @return The collection of students.
  	 */
- 	public abstract Collection<Student> getStudents(Model model);
+ 	public Collection<Student> getStudents(Model model);
 }
