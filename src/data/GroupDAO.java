@@ -1,15 +1,8 @@
 package data;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Collection;
-
-import model.Group;
-import model.Model;
-import model.Student;
+import java.sql.*;
+import java.util.*;
+import model.*;
 
 /**
  * The GroupDAO class is a data access class to persist
@@ -135,28 +128,129 @@ public class GroupDAO implements BaseDAO {
 		return deleted;
 	}
 
+	/**
+	 * This method retrieves all Groups from the database and
+	 * returns the Collection.
+	 * 
+	 * @return The Collection of Groups.
+	 */
 	@Override
 	public Collection<Model> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		Collection<Model> groups = new ArrayList<>();
+		
+		String query = "SELECT * FROM " + Database.GROUP_TABLE; 
+		
+		try(PreparedStatement preparedStatement = 
+				connection.prepareStatement(query)) {			
+					
+			ResultSet resultSet = preparedStatement.executeQuery();
+			
+			while(resultSet.next()) {				
+				Group group = new Group();
+				group.setId(resultSet.getInt(Database.GROUP_ID));
+				group.setClassroomId(resultSet.getInt(Database.CLASSROOM_ID));
+				group.setGroupNumber(resultSet.getInt(Database.GROUP_NUMBER));
+				group.setIsFrontGroup(resultSet.getBoolean(Database.IS_FRONT_GROUP));
+				group.setDateCreated(resultSet.getString(Database.DATE_CREATED));				
+				groups.add(group);			
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+ 		
+ 		return groups;
 	}
 
+	/**
+	 * This method assigns a Student to a Group.
+	 * 
+	 * @param model The Group.
+	 * @param student The Student to be assigned.
+	 */
 	@Override
 	public void assignStudent(Model model, Student student) {
-		// TODO Auto-generated method stub
+		Group group = (Group) model;
 		
+		String query = "INSERT INTO " + Database.GROUP_ASSIGNMENT_TABLE +
+				" (" + Database.GROUP_ID + ", " + Database.STUDENT_ID + 
+				") VALUES (?, ?)";
+		
+		try(PreparedStatement preparedStatement = 
+				connection.prepareStatement(query)) {			
+			
+			preparedStatement.setInt(1, group.getId());
+			preparedStatement.setInt(2, student.getId());
+			preparedStatement.execute();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}		
 	}
 
+	/**
+	 * This method removes a Student from a Group.
+	 * 
+	 * @param model The Group.
+	 * @param student The student to be removed.
+	 */
 	@Override
 	public void unassignStudent(Model model, Student student) {
-		// TODO Auto-generated method stub
+		Group group = (Group) model;
 		
+		String query = "DELETE FROM " + Database.GROUP_ASSIGNMENT_TABLE + 
+				" WHERE " + Database.GROUP_ID + " = ? AND " + 
+				Database.STUDENT_ID + " = ?";
+		
+		try(PreparedStatement preparedStatement = 
+				connection.prepareStatement(query)) {		
+						
+			preparedStatement.setInt(1, group.getId());
+			preparedStatement.setInt(2, student.getId());
+			preparedStatement.execute();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}		
 	}
 
+	/**
+	 * This method retrieves all Students assigned to the passed
+	 * in Group and returns them in a Collection.
+	 * 
+	 * @param model The Group with assigned Students.
+	 * @return The Collection of Students.
+	 */
 	@Override
 	public Collection<Student> getStudents(Model model) {
-		// TODO Auto-generated method stub
-		return null;
+		Group group = (Group) model;
+		Collection<Student> students = new ArrayList<>();
+ 		
+ 		String query = "SELECT * FROM " + Database.STUDENT_TABLE +
+ 				" INNER JOIN " + Database.GROUP_ASSIGNMENT_TABLE +
+ 				" WHERE " + Database.STUDENT_TABLE + "." + Database.STUDENT_ID + 
+ 				" = " + Database.GROUP_ASSIGNMENT_TABLE + "." + Database.STUDENT_ID +
+ 				"AND " + Database.GROUP_ASSIGNMENT_TABLE + "." + Database.GROUP_ID + " = ?";
+ 		
+ 		try(PreparedStatement preparedStatement = 
+					connection.prepareStatement(query)) { 			
+ 			
+ 			preparedStatement.setInt(1, group.getId());
+ 			
+ 			ResultSet resultSet = preparedStatement.executeQuery();
+ 			
+ 			while(resultSet.next()) {  				
+ 				Student student = new Student();				
+				student.setId(resultSet.getInt(Database.STUDENT_ID));
+				student.setName(resultSet.getString(Database.NAME));
+				student.setGender(Gender.valueOf(resultSet.getString(Database.GENDER).toUpperCase())); 
+				student.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 
+				student.setFrontSeatNeeded(resultSet.getBoolean(Database.FRONT_SEAT_NEEDED));
+				student.setPreferredGroupOfFive(resultSet.getBoolean(Database.PREFERRED_GROUP_OF_FIVE));				
+				students.add(student);				
+ 			} 			 	
+ 		} catch(SQLException e) {
+ 			e.printStackTrace();
+ 		} 		
+ 		
+ 		return students;
 	}
 
 }
