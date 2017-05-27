@@ -40,7 +40,7 @@ public class ClassroomDAO implements BaseDAO {
 				Database.MAXIMUM_FRONT_GROUPS + ")" + 
 				"VALUES (?, ?)";
 		
-		String idQuery = "SELECT last_insert_rowid()";
+		String idQuery = "SELECT last_insert_rowid()";    
 		
 		try(PreparedStatement preparedStatement = 
 				connection.prepareStatement(query)) {	
@@ -74,7 +74,6 @@ public class ClassroomDAO implements BaseDAO {
 	@Override
 	public boolean update(Model model) {
 		Classroom classroom = (Classroom) model;
-		
 		boolean updateSuccessful = false;
 		
 		String query = "UPDATE " + Database.CLASSROOM_TABLE + 
@@ -226,10 +225,10 @@ public class ClassroomDAO implements BaseDAO {
 		Collection<Student> students = new ArrayList<>();
 		
  		String query = "SELECT * FROM " + Database.STUDENT_TABLE + 
- 				" INNER JOIN enrollment " + "WHERE " + 
+ 				" INNER JOIN " + Database.ENROLLMENT_TABLE + " WHERE " + 
  				Database.STUDENT_TABLE + "." + Database.STUDENT_ID + 
  				" = " + Database.ENROLLMENT_TABLE + "." + Database.STUDENT_ID
- 				+ "AND " + Database.ENROLLMENT_TABLE + "." + Database.CLASSROOM_ID + " = ?";
+ 				+ " AND " + Database.ENROLLMENT_TABLE + "." + Database.CLASSROOM_ID + " = ?";
  				
 		try(PreparedStatement preparedStatement = 
 				connection.prepareStatement(query)) {

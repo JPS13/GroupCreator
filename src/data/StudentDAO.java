@@ -56,7 +56,7 @@ public class StudentDAO implements BaseDAO {
 			
 			while(resultSet.next()) {
 				int id = resultSet.getInt(1);
-				student.setId(id);
+				student.setId(id); System.out.println("StudentDAO id after add..." + id);
 			}
 			
 			statement.close();	
@@ -174,7 +174,7 @@ public class StudentDAO implements BaseDAO {
 	public void assignStudent(Model model, Student student) {
 		Student student1 = (Student) model;
 		
-		String query = "INSERT INTO " + Database.INCOMPATIBLE_STUDENT_TABLE +
+		String query = "INSERT OR IGNORE INTO " + Database.INCOMPATIBLE_STUDENT_TABLE +
 				" (" + Database.STUDENT_1_ID + ", " + Database.STUDENT_2_ID + 
 				") VALUES (?, ?)";
 		
@@ -236,8 +236,8 @@ public class StudentDAO implements BaseDAO {
 		Collection<Student> incompatibleStudents = new ArrayList<>();
  		
  		String query = "SELECT * FROM " + Database.STUDENT_TABLE +
- 				"INNER JOIN " + Database.INCOMPATIBLE_STUDENT_TABLE +
- 				"WHERE " + Database.STUDENT_TABLE + "." + Database.STUDENT_ID + 
+ 				" INNER JOIN " + Database.INCOMPATIBLE_STUDENT_TABLE +
+ 				" WHERE " + Database.STUDENT_TABLE + "." + Database.STUDENT_ID + 
  				" = " + Database.INCOMPATIBLE_STUDENT_TABLE + "." + Database.STUDENT_2_ID +
  				" AND " + Database.INCOMPATIBLE_STUDENT_TABLE + "." + Database.STUDENT_1_ID + " = ?";
  		

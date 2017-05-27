@@ -38,7 +38,7 @@ public class GroupDAO implements BaseDAO {
 				", " + Database.IS_FRONT_GROUP + ", "
 				+ Database.DATE_CREATED + ") VALUES (?, ?, ?, ?)";
 		
-		String idQuery = "SELECT LAST_INSERT_ID()";
+		String idQuery = "SELECT last_insert_rowid()";
 		
 		try(PreparedStatement preparedStatement = 
 				connection.prepareStatement(query)) {
@@ -171,7 +171,7 @@ public class GroupDAO implements BaseDAO {
 	public void assignStudent(Model model, Student student) {
 		Group group = (Group) model;
 		
-		String query = "INSERT INTO " + Database.GROUP_ASSIGNMENT_TABLE +
+		String query = "INSERT OR IGNORE INTO " + Database.GROUP_ASSIGNMENT_TABLE +
 				" (" + Database.GROUP_ID + ", " + Database.STUDENT_ID + 
 				") VALUES (?, ?)";
 		
@@ -227,14 +227,14 @@ public class GroupDAO implements BaseDAO {
  				" INNER JOIN " + Database.GROUP_ASSIGNMENT_TABLE +
  				" WHERE " + Database.STUDENT_TABLE + "." + Database.STUDENT_ID + 
  				" = " + Database.GROUP_ASSIGNMENT_TABLE + "." + Database.STUDENT_ID +
- 				"AND " + Database.GROUP_ASSIGNMENT_TABLE + "." + Database.GROUP_ID + " = ?";
+ 				" AND " + Database.GROUP_ASSIGNMENT_TABLE + "." + Database.GROUP_ID + " = ?";
  		
  		try(PreparedStatement preparedStatement = 
 					connection.prepareStatement(query)) { 			
  			
  			preparedStatement.setInt(1, group.getId());
  			
- 			ResultSet resultSet = preparedStatement.executeQuery();
+ 			ResultSet resultSet = preparedStatement.executeQuery();  
  			
  			while(resultSet.next()) {  				
  				Student student = new Student();				

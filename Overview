@@ -1,20 +1,14 @@
-Top Level Overview of Program
-
-
 
 Notes
 
-   A group cannot exist without a classroom - Aggregation 
-   A student can exist without a classroom - Composition
-   Change lists to maps?
+	When a student is updated, instances of that student as an incompatible
+	student need to be updated in UI as well. 
+		- Update student
+		- for each of that student's incompatible students
+			- update the display for the updated student
   
    Student
      - Map<String, Boolean> accommodations
         - frontSeatNeeded
         - groupOfFivePreferred     
      
-   Classroom 
-     - Layout - total number of groups, # of front groups
-     - addStudent - enrollStudent? checks if there is room for another front seat student
-     - addIncompatibleStudents - keep or remove? classroom must contain both students and sizes must allow
-     - removeIncompatibleStudents keep or remove?

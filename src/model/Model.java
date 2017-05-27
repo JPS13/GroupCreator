@@ -21,7 +21,7 @@ public abstract class Model {
 	protected int id;
 	
 	/** The set of subordinate students for the extending object. */
-	protected Collection<Student> students = new HashSet<>();
+	protected Collection<Student> students = new ArrayList<>();
 	
 	/**
 	 * Returns the unique id assigned to the object.
