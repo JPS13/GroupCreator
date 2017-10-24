@@ -243,10 +243,6 @@ public class ClassroomDAO implements BaseDAO {
 				student.setName(resultSet.getString(Database.NAME)); 
 				student.setGender(Gender.valueOf(resultSet.getString(Database.GENDER).toUpperCase())); 
 				student.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 
-				
-				StudentDAO sdao = new StudentDAO();				
-				student.setAccommodations(sdao.getAccommodations(student));
-				student.setStudents(sdao.getStudents(student));
 				students.add(student);			
 			}			
 		} catch(SQLException e) {

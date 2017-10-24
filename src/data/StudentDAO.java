@@ -52,13 +52,13 @@ public class StudentDAO implements BaseDAO {
 			
 			while(resultSet.next()) {
 				int id = resultSet.getInt(1);
-				student.setId(id); System.out.println("StudentDAO id after add..." + id);
+				student.setId(id); 
 			}
 			
 			statement.close();	
 		} catch(SQLException e) {
 			e.printStackTrace();
-		}		
+		}			
 		return student;
 	}
 
@@ -250,8 +250,6 @@ public class StudentDAO implements BaseDAO {
 				student.setName(resultSet.getString(Database.NAME)); 
 				student.setGender(Gender.valueOf(resultSet.getString(Database.GENDER).toUpperCase())); 
 				student.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 	
-				student.setAccommodations(getAccommodations(student));
-				student.setStudents(getStudents(student));
 				students.add(student);			
 			}	 
 		} catch(SQLException e) {
@@ -393,8 +391,7 @@ public class StudentDAO implements BaseDAO {
 				s.setId(resultSet.getInt(Database.STUDENT_ID));
 				s.setName(resultSet.getString(Database.NAME)); 			
 				s.setGender(Gender.valueOf(resultSet.getString(Database.GENDER).toUpperCase())); 
-				s.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 	
-				s.setAccommodations(getAccommodations(s));
+				s.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 
 				incompatibleStudents.add(s);				
  			} 			
  		} catch(SQLException e) {
