@@ -37,12 +37,18 @@ public final class Database {
 	public final static String FRONT_SEAT_NEEDED = "frontSeatNeeded";
 	public final static String PREFERRED_GROUP_OF_FIVE = "preferredGroupOfFive";
 	
+	/** Accommodations table and columns. */
+	public final static String ACCOMMODATIONS_TABLE = "accommodations";
+	public final static String ACCOMMODATION = "accommodation";
+	public final static String STUDENT_ACCOMMODATIONS_TABLE = "studentAccommodations";
+	
 	/** Group table and columns */	
 	public final static String GROUP_TABLE = "groups";
 	public final static String GROUP_ID = "groupId";
 	public final static String GROUP_NUMBER = "groupNumber";
 	public final static String DATE_CREATED = "dateCreated";
 	public final static String IS_FRONT_GROUP = "isFrontGroup";
+	public final static String GROUP_ASSIGNMENTS = "groupAssignments";
 	
 	/** Enrollment table */	
 	public final static String ENROLLMENT_TABLE = "enrollment";
@@ -111,9 +117,15 @@ public final class Database {
 						STUDENT_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
 						NAME + " TEXT NOT NULL, " +
 						GENDER + " TEXT, " +
-						ABILITY_LEVEL + " TEXT, " +
-						FRONT_SEAT_NEEDED + " INTEGER, " +
-						PREFERRED_GROUP_OF_FIVE + " INTEGER);";
+						ABILITY_LEVEL + " TEXT);";
+		
+		String createAccommodations = "CREATE TABLE IF NOT EXISTS " + ACCOMMODATIONS_TABLE + " (" +
+						ACCOMMODATION + " TEXT NOT NULL PRIMARY KEY);";
+		
+		String createStudentAccommodations = "CREATE TABLE IF NOT EXISTS " + STUDENT_ACCOMMODATIONS_TABLE + " (" +
+						STUDENT_ID + " INTEGER NOT NULL, " +
+						ACCOMMODATION + " TEXT NOT NULL, " +
+						"PRIMARY KEY(" + STUDENT_ID + ", " + ACCOMMODATION + "));";
 				
 		String createGroups = "CREATE TABLE IF NOT EXISTS " + GROUP_TABLE + " (" +
 					  GROUP_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
@@ -132,7 +144,7 @@ public final class Database {
 			   						STUDENT_2_ID + " INTEGER NOT NULL, " +
 			   						"PRIMARY KEY(" + STUDENT_1_ID + ", " + STUDENT_2_ID + "));";
 		
-		String createGroupAssignments = "CREATE TABLE IF NOT EXISTS groupAssignments (" +
+		String createGroupAssignments = "CREATE TABLE IF NOT EXISTS " + GROUP_ASSIGNMENTS + " (" +
 		 						GROUP_ID + " INTEGER NOT NULL, " +
 		 						STUDENT_ID + " INTEGER NOT NULL, " +
 		 						"PRIMARY KEY(" + GROUP_ID + ", " + STUDENT_ID + "));";
@@ -140,6 +152,8 @@ public final class Database {
 		List<String> createStrings = new ArrayList<>();
 		createStrings.add(createClassrooms);
 		createStrings.add(createStudents);
+		createStrings.add(createAccommodations);
+		createStrings.add(createStudentAccommodations);
 		createStrings.add(createGroups);
 		createStrings.add(createEnrollment);
 		createStrings.add(createIncompatibleStudents);

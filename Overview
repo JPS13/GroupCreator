@@ -11,4 +11,27 @@ Notes
      - Map<String, Boolean> accommodations
         - frontSeatNeeded
         - groupOfFivePreferred     
+        
+   Database
+    - Need to figure out accommodations
+        - Join studentid and accommodations table
+        
+        
+     - Accommodations table
+        - list of all possible accommodations
+        
+     - Student_Accommodations Table
+        - studentId column
+        - attribute column (composite key)
+        - value t/f column if accommodation applies
+        
+     
+     - Attributes table
+        - list all possible attributes
+           - i.e. max front groups
+        
+     - classroom_attributes table
+        - classroomId column
+        - attribute column
+        - value column
      

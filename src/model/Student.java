@@ -1,13 +1,15 @@
 package model;
 
+import java.util.*;
+
 /**
- * The Student class represents a student in an elementary room
+ * The Student class represents a student in an elementary school
  * classroom. 
  * 
  * @author Joseph Stewart
  */
 public class Student extends Model implements Comparable<Student> {
-	
+		
 	/** The Student's name. */
 	private String name;
 	
@@ -17,16 +19,15 @@ public class Student extends Model implements Comparable<Student> {
 	/** The Student's ability level. */
 	private AbilityLevel abilityLevel;	
 	
-	/** Accommodations */
+	/** Accommodations */	
+	Map<String, Boolean> accommodations = new HashMap<>();
 	
-	/** Boolean flag to indicate whether or not the student needs to sit up front. */
-	private boolean frontSeatNeeded;
-	
-	/** Boolean flag to indicate whether or not the student needs to be in a group of five. */
-	private boolean preferredGroupOfFive;
-		
 	/** Default Constructor. */
-	public Student() { }
+	public Student() {
+		for(Accommodations a: Accommodations.values()) {
+			accommodations.put(a.toString(), false);
+		}
+	}
 	
 	/**
 	 * Constructor which sets values for name, gender, and ability level.
@@ -39,6 +40,10 @@ public class Student extends Model implements Comparable<Student> {
 		this.name = name;
 		this.gender = gender;
 		this.abilityLevel = abilityLevel;	
+		
+		for(Accommodations a: Accommodations.values()) {
+			accommodations.put(a.toString(), false);
+		}
 	}
 		
 	/**
@@ -51,21 +56,21 @@ public class Student extends Model implements Comparable<Student> {
 	}
 	
 	/**
+	 * Returns the map of the student's accommodations.
+	 * 
+	 * @return The Student's accommodations map.
+	 */
+	public Map<String, Boolean> getAccommodations() {
+		return accommodations;
+	}
+	
+	/**
 	 * Returns the Student's name.
 	 * 
 	 * @return The Student's name.
 	 */
 	public String getName() {
 		return name;
-	}
-	
-	/**
-	 * Returns the value of the frontSeatNeeded flag.
-	 * 
-	 * @return The boolean flag for frontSeatNeeded.
-	 */
-	public boolean getFrontSeatNeeded() {		
-		return frontSeatNeeded;		
 	}
 	
 	/**
@@ -76,16 +81,7 @@ public class Student extends Model implements Comparable<Student> {
 	public Gender getGender() {
 		return gender;
 	}
-	
-	/**
-	 * Returns the value of the preferredGroupOfFive.
-	 *  
-	 * @return the boolean flag value.
-	 */
-	public boolean getPreferredGroupOfFive() {
-		return preferredGroupOfFive;
-	}
-	
+		
 	/**
 	 * Sets the Student's ability level.
 	 * 
@@ -96,15 +92,14 @@ public class Student extends Model implements Comparable<Student> {
 	}
 	
 	/**
-	 * Sets the value for whether or not the Student needs
-	 * to sit at the front of the classroom. 
-	 * 
-	 * @param frontSeatNeeded The boolean flag for the desired result. 
+	 * Sets the accommodations for the student.
+	 * 	  
+	 * @param accommodations The map of the students accommodations.
 	 */
-	public void setFrontSeatNeeded(boolean frontSeatNeeded) {
-		this.frontSeatNeeded = frontSeatNeeded;
+	public void getAccommodations(Map<String, Boolean> accommodations) {
+		this.accommodations = accommodations;
 	}
-		
+	
 	/**
 	 * Sets the Student's gender.
 	 * 
@@ -124,16 +119,6 @@ public class Student extends Model implements Comparable<Student> {
 	}
 	
 	/**
-	 * Sets the value for whether or not this Student should
-	 * be in a group of five.
-	 * 
-	 * @param preferredGroupOfFive The boolean flag for the desired result.
-	 */
-	public void setPreferredGroupOfFive(boolean preferredGroupOfFive) {
-		this.preferredGroupOfFive = preferredGroupOfFive;
-	}	
-	
-	/**
 	 * This method compares this Student with another one.
 	 * 
 	 * @param otherStudent The other Student to be compared.
@@ -145,42 +130,54 @@ public class Student extends Model implements Comparable<Student> {
 	}
 	
 	/**
-	 * computes a numeric hash code for this Student.
+	 * Computes a hash code for this Student.
 	 * 
-	 * @return The computed hash code.
+	 * @param result The integer hash code for this Student.
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((abilityLevel == null) ? 0 : abilityLevel.hashCode());
-		result = prime * result + (frontSeatNeeded ? 1231 : 1237);
+		result = prime * result + ((accommodations == null) ? 0 : accommodations.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + (preferredGroupOfFive ? 1231 : 1237);
 		return result;
 	}
-
+	
 	/**
-	 * This method tests this Student and another Student
-	 * for equality.
+	 * Tests this Student for equality with obj.
 	 * 
-	 * @param object The other Student to compare.
-	 * @return True if the two objects are equal; false otherwise.
+	 * @param obj The other student.
 	 */
+
 	@Override
-	public boolean equals(Object object) {		
-		Student otherStudent = (Student) object;		
-		
-		return (object != null &&
-				this != otherStudent &&
-				this.name.equals(otherStudent.getName()) &&
-				this.gender != otherStudent.getGender() &&
-				this.abilityLevel != otherStudent.getAbilityLevel() &&
-				this.frontSeatNeeded != otherStudent.getFrontSeatNeeded() &&
-				this.preferredGroupOfFive != otherStudent.getPreferredGroupOfFive());		
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Student other = (Student) obj;
+		if (abilityLevel != other.abilityLevel)
+			return false;
+		if (accommodations == null) {
+			if (other.accommodations != null)
+				return false;
+		} else if (!accommodations.equals(other.accommodations))
+			return false;
+		if (gender != other.gender)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 	
+
 	/**
 	 * A String representation of this Student.
 	 * 
@@ -192,14 +189,10 @@ public class Student extends Model implements Comparable<Student> {
 				.append(", Gender: ").append(gender)				
 				.append(", Ability Level: ").append(abilityLevel);
 		
-		if(frontSeatNeeded) {
-			stringValue.append(", Needs Front Seat");
-		}
-		
-		if(preferredGroupOfFive) {
-			stringValue.append(", Needs Group of Five");
-		}
-		
+		for(String accommodation: accommodations.keySet()) {
+			if(accommodations.get(accommodation))
+				stringValue.append(", ").append(accommodation);
+		}		
 		return stringValue.toString();
 	}
 }

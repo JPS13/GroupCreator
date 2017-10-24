@@ -254,6 +254,10 @@ public class StudentDAO implements BaseDAO {
 				s.setName(resultSet.getString(Database.NAME)); 			
 				s.setGender(Gender.valueOf(resultSet.getString(Database.GENDER).toUpperCase())); 
 				s.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 
+				
+				Map<String, Boolean> accommodations = new HashMap<>();
+				String accommodationQuery = "";
+				
 				s.setFrontSeatNeeded(resultSet.getBoolean(Database.FRONT_SEAT_NEEDED));
 				s.setPreferredGroupOfFive(resultSet.getBoolean(Database.PREFERRED_GROUP_OF_FIVE));				
 				incompatibleStudents.add(s);				
