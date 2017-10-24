@@ -35,9 +35,7 @@ public class StudentDAO implements BaseDAO {
 		Student student = (Student) model;
 		
 		String query = "INSERT INTO " + Database.STUDENT_TABLE + " (" + Database.NAME + 
-				", " + Database.GENDER + ", " + Database.ABILITY_LEVEL + ", " + 
-				Database.FRONT_SEAT_NEEDED + ", " + Database.PREFERRED_GROUP_OF_FIVE + ")" 
-				+ " VALUES (?, ?, ?, ?, ?)";
+				", " + Database.GENDER + ", " + Database.ABILITY_LEVEL +  ")" + " VALUES (?, ?, ?)";
 		
 		String idQuery = "SELECT last_insert_rowid()";
 		
@@ -47,8 +45,6 @@ public class StudentDAO implements BaseDAO {
 			preparedStatement.setString(1, student.getName());
 			preparedStatement.setString(2, student.getGender().toString());
 			preparedStatement.setString(3, student.getAbilityLevel().toString());
-			preparedStatement.setBoolean(4, student.getFrontSeatNeeded());	
-			preparedStatement.setBoolean(5, student.getPreferredGroupOfFive());
 			preparedStatement.execute();
 			
 			Statement statement = connection.createStatement();
@@ -75,13 +71,11 @@ public class StudentDAO implements BaseDAO {
 	 */
 	@Override
 	public boolean update(Model model) {
-		Student student = (Student) model;		
-		boolean updateSuccessful = false;
+		Student student = (Student) model;	
 		
 		String query = "UPDATE " + Database.STUDENT_TABLE + " SET " + 
 				Database.NAME + " = ?, " + Database.GENDER + " = ?, " + 
-				Database.ABILITY_LEVEL + " = ?, " + Database.FRONT_SEAT_NEEDED + 
-				" = ?, " + Database.PREFERRED_GROUP_OF_FIVE + " = ? WHERE " + 
+				Database.ABILITY_LEVEL + " = ? WHERE " + 
 				Database.STUDENT_ID + " = ?";
 		
 		try(PreparedStatement preparedStatement = 
@@ -90,17 +84,15 @@ public class StudentDAO implements BaseDAO {
 			preparedStatement.setString(1, student.getName());	
 			preparedStatement.setString(2, student.getGender().toString());
 			preparedStatement.setString(3, student.getAbilityLevel().toString());
-			preparedStatement.setBoolean(4, student.getFrontSeatNeeded());
-			preparedStatement.setBoolean(5, student.getPreferredGroupOfFive());
-			preparedStatement.setInt(6, student.getId());		
+			preparedStatement.setInt(4, student.getId());		
 			preparedStatement.executeUpdate();
 			
-			updateSuccessful = true;
+			return true;
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return updateSuccessful;
+		return false;
 	}
 
 	/**
@@ -152,9 +144,7 @@ public class StudentDAO implements BaseDAO {
 				student.setId(resultSet.getInt(Database.STUDENT_ID));
 				student.setName(resultSet.getString(Database.NAME)); 
 				student.setGender(Gender.valueOf(resultSet.getString(Database.GENDER).toUpperCase())); 
-				student.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 
-				student.setFrontSeatNeeded(resultSet.getBoolean(Database.FRONT_SEAT_NEEDED));
-				student.setPreferredGroupOfFive(resultSet.getBoolean(Database.PREFERRED_GROUP_OF_FIVE));				
+				student.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 		
 				students.add(student);			
 			}	 
 		} catch(SQLException e) {
@@ -253,13 +243,7 @@ public class StudentDAO implements BaseDAO {
 				s.setId(resultSet.getInt(Database.STUDENT_ID));
 				s.setName(resultSet.getString(Database.NAME)); 			
 				s.setGender(Gender.valueOf(resultSet.getString(Database.GENDER).toUpperCase())); 
-				s.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 
-				
-				Map<String, Boolean> accommodations = new HashMap<>();
-				String accommodationQuery = "";
-				
-				s.setFrontSeatNeeded(resultSet.getBoolean(Database.FRONT_SEAT_NEEDED));
-				s.setPreferredGroupOfFive(resultSet.getBoolean(Database.PREFERRED_GROUP_OF_FIVE));				
+				s.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 							
 				incompatibleStudents.add(s);				
  			} 			
  		} catch(SQLException e) {

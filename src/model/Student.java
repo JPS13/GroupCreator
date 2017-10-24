@@ -23,11 +23,7 @@ public class Student extends Model implements Comparable<Student> {
 	Map<String, Boolean> accommodations = new HashMap<>();
 	
 	/** Default Constructor. */
-	public Student() {
-		for(Accommodations a: Accommodations.values()) {
-			accommodations.put(a.toString(), false);
-		}
-	}
+	public Student() {}
 	
 	/**
 	 * Constructor which sets values for name, gender, and ability level.
@@ -39,11 +35,7 @@ public class Student extends Model implements Comparable<Student> {
 	public Student(String name, Gender gender, AbilityLevel abilityLevel) {					
 		this.name = name;
 		this.gender = gender;
-		this.abilityLevel = abilityLevel;	
-		
-		for(Accommodations a: Accommodations.values()) {
-			accommodations.put(a.toString(), false);
-		}
+		this.abilityLevel = abilityLevel;
 	}
 		
 	/**
@@ -96,7 +88,7 @@ public class Student extends Model implements Comparable<Student> {
 	 * 	  
 	 * @param accommodations The map of the students accommodations.
 	 */
-	public void getAccommodations(Map<String, Boolean> accommodations) {
+	public void setAccommodations(Map<String, Boolean> accommodations) {
 		this.accommodations = accommodations;
 	}
 	
