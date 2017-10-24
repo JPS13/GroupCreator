@@ -1,6 +1,9 @@
 
 Notes
 
+
+Issues: sdao.getStudents gets incompatibles that have already been retrieved...
+
 	When a student is updated, instances of that student as an incompatible
 	student need to be updated in UI as well. 
 		- Update student

@@ -242,8 +242,10 @@ public class GroupDAO implements BaseDAO {
 				student.setName(resultSet.getString(Database.NAME));
 				student.setGender(Gender.valueOf(resultSet.getString(Database.GENDER).toUpperCase())); 
 				student.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 
-				student.setFrontSeatNeeded(resultSet.getBoolean(Database.FRONT_SEAT_NEEDED));
-				student.setPreferredGroupOfFive(resultSet.getBoolean(Database.PREFERRED_GROUP_OF_FIVE));				
+				
+				StudentDAO sdao = new StudentDAO();
+				student.setAccommodations(sdao.getAccommodations(student));
+				student.setStudents(sdao.getStudents(student));				
 				students.add(student);				
  			} 			 	
  		} catch(SQLException e) {

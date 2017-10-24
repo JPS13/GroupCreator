@@ -63,6 +63,25 @@ public class StudentDAO implements BaseDAO {
 	}
 
 	/**
+	 * Adds an accommodation to the table.
+	 * 
+	 * @param accommodation The accommodation to be added.
+	 */
+	public void addAccommodation(String accommodation) {
+		String query = "INSERT INTO " + Database.ACCOMMODATIONS_TABLE + 
+				" (" + Database.NAME + ")" + " VALUES (?)";
+		
+		try(PreparedStatement preparedStatement = 
+				connection.prepareStatement(query)) {
+						
+			preparedStatement.setString(1, accommodation);
+			preparedStatement.execute();	
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	/**
 	 * This method updates a Student record already stored in
 	 * the database. 
 	 * 
@@ -94,6 +113,31 @@ public class StudentDAO implements BaseDAO {
 		
 		return false;
 	}
+	
+	/**
+	 * Updates the value of the accommodation.
+	 * 
+	 * @param oldAccommodation The old value.
+	 * @param newAccommodation The new value.
+	 * @return True if updated successfully; false otherwise.
+	 */
+	public boolean updateAccommodation(String oldAccommodation, String newAccommodation) {
+		String query = "UPDATE " + Database.ACCOMMODATIONS_TABLE + " SET " + 
+				Database.ACCOMMODATION + " = ? WHERE " + 
+				Database.ACCOMMODATION + " = ?";
+		
+		try(PreparedStatement preparedStatement = 
+				connection.prepareStatement(query)) {
+					
+			preparedStatement.setString(1, newAccommodation);	
+			preparedStatement.setString(2, oldAccommodation);	
+			preparedStatement.executeUpdate();			
+			return true;
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}		
+		return false;
+	}
 
 	/**
 	 * This method deletes a Student record from the database.
@@ -104,7 +148,6 @@ public class StudentDAO implements BaseDAO {
 	@Override
 	public boolean delete(Model model) {
 		Student student = (Student) model;
-		boolean deleted = false;
 		
 		String query = "DELETE FROM " + Database.STUDENT_TABLE + 
 				" WHERE " + Database.STUDENT_ID + " = ?";
@@ -113,16 +156,78 @@ public class StudentDAO implements BaseDAO {
 				connection.prepareStatement(query)) {	
 						
 			preparedStatement.setInt(1, student.getId());
-			preparedStatement.execute();
-			
-			deleted = true;
+			preparedStatement.execute();			
+			return true;
 		} catch(SQLException e) {
 			e.printStackTrace();
-		}
-		
-		return deleted;
+		}		
+		return false;
+	}
+	
+	/**
+	 * Deletes an accommodation entry from the table.
+	 * 
+	 * @param accommodation The value to be deleted.
+	 * @return True if deleted successfully; false otherwise.
+	 */
+	public boolean deleteAccommodation(String accommodation) {
+		String query = "DELETE FROM " + Database.ACCOMMODATIONS_TABLE + 
+				" WHERE " + Database.ACCOMMODATION + " = ?";
+			
+		try(PreparedStatement preparedStatement = 
+				connection.prepareStatement(query)) {	
+						
+			preparedStatement.setString(1, accommodation);
+			preparedStatement.execute();			
+			return true;
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}		
+		return false;
 	}
 
+	/**
+	 * Obtains the relevant accommodations for this student.
+	 * 
+	 * @param student The student whose accommodations are needed.
+	 * @return The map of accommodations.
+	 */
+	public Map<String, Boolean> getAccommodations(Student student) {
+		Map<String, Boolean> accommodations = new HashMap<>();
+		
+		String accommodationQuery = "SELECT * FROM " + Database.ACCOMMODATIONS_TABLE;		
+		
+		try(PreparedStatement preparedStatement = 
+				connection.prepareStatement(accommodationQuery)) {
+						
+			ResultSet resultSet = preparedStatement.executeQuery();
+			
+			while(resultSet.next()) {						
+				accommodations.put(resultSet.getString(Database.ACCOMMODATION), false);		
+			}	 
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}		
+ 		
+ 		String studentQuery = "SELECT " + Database.ACCOMMODATION + " FROM " + 
+ 				Database.STUDENT_ACCOMMODATIONS_TABLE +
+ 				" WHERE " + Database.STUDENT_ID + " = ?";
+ 		
+ 		try(PreparedStatement preparedStatement = 
+					connection.prepareStatement(studentQuery)) {
+ 			 			
+ 			preparedStatement.setInt(1, student.getId()); 			
+ 			ResultSet resultSet = preparedStatement.executeQuery();
+ 			
+ 			while(resultSet.next()) {  	 				
+ 				accommodations.put(resultSet.getString(Database.ACCOMMODATION), true);				
+ 			} 			
+ 		} catch(SQLException e) {
+ 			e.printStackTrace();
+ 		} 				
+		return accommodations;
+	}
+	
 	/**
 	 * This method retrieves all of the Students stored in the Database.
 	 * 
@@ -144,7 +249,9 @@ public class StudentDAO implements BaseDAO {
 				student.setId(resultSet.getInt(Database.STUDENT_ID));
 				student.setName(resultSet.getString(Database.NAME)); 
 				student.setGender(Gender.valueOf(resultSet.getString(Database.GENDER).toUpperCase())); 
-				student.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 		
+				student.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 	
+				student.setAccommodations(getAccommodations(student));
+				student.setStudents(getStudents(student));
 				students.add(student);			
 			}	 
 		} catch(SQLException e) {
@@ -154,6 +261,49 @@ public class StudentDAO implements BaseDAO {
  		return students;
 	}
 
+	/**
+	 * Assigns an accommodation to the student.
+	 * 
+	 * @param student The student requiring an accommodation.
+	 * @param accommodation The accommodation required.
+	 */
+	public void assignAccommodation(Student student, String accommodation) {
+		String query = "INSERT OR IGNORE INTO " + Database.STUDENT_ACCOMMODATIONS_TABLE +
+				" (" + Database.STUDENT_ID + ", " + Database.ACCOMMODATION + 
+				") VALUES (?, ?)";
+		
+		try(PreparedStatement preparedStatement = 
+				connection.prepareStatement(query)) {
+						
+			preparedStatement.setInt(1, student.getId());
+			preparedStatement.setString(2, accommodation);
+			preparedStatement.execute();	
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	/**
+	 * Remove an accommodation for a student.
+	 * 
+	 * @param student The student whose accommodation is removed.
+	 * @param accommodation The accommodation to be removed.
+	 */
+	public void unassignAccommodation(Student student, String accommodation) {
+		String query = "DELETE FROM " + Database.STUDENT_ACCOMMODATIONS_TABLE + " WHERE " +
+				Database.STUDENT_ID + " = ? AND " + Database.ACCOMMODATION + " = ?";
+		
+		try(PreparedStatement preparedStatement = 
+				connection.prepareStatement(query)) {	
+						
+			preparedStatement.setInt(1, student.getId());
+			preparedStatement.setString(2, accommodation);
+			preparedStatement.execute();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}	
+	}
+	
 	/**
 	 * This method assigns incompatible students to each other.
 	 * 
@@ -243,7 +393,8 @@ public class StudentDAO implements BaseDAO {
 				s.setId(resultSet.getInt(Database.STUDENT_ID));
 				s.setName(resultSet.getString(Database.NAME)); 			
 				s.setGender(Gender.valueOf(resultSet.getString(Database.GENDER).toUpperCase())); 
-				s.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 							
+				s.setAbilityLevel(AbilityLevel.valueOf(resultSet.getString(Database.ABILITY_LEVEL).toUpperCase())); 	
+				s.setAccommodations(getAccommodations(s));
 				incompatibleStudents.add(s);				
  			} 			
  		} catch(SQLException e) {
