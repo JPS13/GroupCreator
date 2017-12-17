@@ -400,4 +400,20 @@ public class StudentDAO implements BaseDAO {
  		
  		return incompatibleStudents;
 	}
+
+	public Collection<Student> completeStudents(Collection<Student> students) {
+		Collection<Student> completeStudents = new ArrayList<>();
+		
+		//may not need different collection
+		
+		for(Student s: students) {			
+			s.setAccommodations(getAccommodations(s));
+			
+			Collection<Student> incompatibles = getStudents(s);
+			
+		
+			completeStudents.add(s);
+		}		
+		return completeStudents;
+	}
 }
